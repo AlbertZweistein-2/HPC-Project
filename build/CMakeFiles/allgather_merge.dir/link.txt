@@ -1,0 +1,1 @@
+/opt/homebrew/bin/aarch64-apple-darwin24-g++-14 -g -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/allgather_merge.dir/main.cpp.o CMakeFiles/allgather_merge.dir/baseline.cpp.o CMakeFiles/allgather_merge.dir/algorithm1.cpp.o CMakeFiles/allgather_merge.dir/algorithm2.cpp.o -o allgather_merge  -lm /opt/homebrew/Cellar/open-mpi/5.0.7/lib/libmpi.dylib
