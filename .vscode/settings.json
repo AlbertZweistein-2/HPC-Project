@@ -42,7 +42,12 @@
         "iomanip": "cpp",
         "iostream": "cpp",
         "istream": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "ostream": "cpp",
+        "sstream": "cpp",
+        "functional": "cpp",
+        "tuple": "cpp",
+        "utility": "cpp"
     },
-    "cmake.sourceDirectory": "/Users/tobias/HPC-Project/sources"
+    "cmake.sourceDirectory": "/home/tobiasponeschtu/Documents/HPC-Project/sources"
 }
