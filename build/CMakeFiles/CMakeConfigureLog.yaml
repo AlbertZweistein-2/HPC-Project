@@ -803,3 +803,105 @@ events:
         
       exitCode: 0
 ...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/FindMPI.cmake:1286 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/FindMPI.cmake:1330 (_MPI_try_staged_settings)"
+      - "/opt/homebrew/share/cmake/Modules/FindMPI.cmake:1653 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:5 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/Users/tobias/HPC-Project/build/CMakeFiles/CMakeScratch/TryCompile-e2ovcE"
+      binary: "/Users/tobias/HPC-Project/build/CMakeFiles/CMakeScratch/TryCompile-e2ovcE"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/tobias/HPC-Project/build/CMakeFiles/CMakeScratch/TryCompile-e2ovcE'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_d965a/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_d965a.dir/build.make CMakeFiles/cmTC_d965a.dir/build
+        Building C object CMakeFiles/cmTC_d965a.dir/test_mpi.c.o
+        /opt/homebrew/bin/aarch64-apple-darwin24-gcc-14  -isystem /opt/homebrew/Cellar/open-mpi/5.0.7/include -arch arm64 -o CMakeFiles/cmTC_d965a.dir/test_mpi.c.o -c /Users/tobias/HPC-Project/build/CMakeFiles/CMakeScratch/TryCompile-e2ovcE/test_mpi.c
+        Linking C executable cmTC_d965a
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d965a.dir/link.txt --verbose=1
+        /opt/homebrew/bin/aarch64-apple-darwin24-gcc-14  -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/cmTC_d965a.dir/test_mpi.c.o -o cmTC_d965a  /opt/homebrew/Cellar/open-mpi/5.0.7/lib/libmpi.dylib
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/FindMPI.cmake:1286 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/FindMPI.cmake:1330 (_MPI_try_staged_settings)"
+      - "/opt/homebrew/share/cmake/Modules/FindMPI.cmake:1653 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:5 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/Users/tobias/HPC-Project/build/CMakeFiles/CMakeScratch/TryCompile-pvn1dX"
+      binary: "/Users/tobias/HPC-Project/build/CMakeFiles/CMakeScratch/TryCompile-pvn1dX"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/tobias/HPC-Project/build/CMakeFiles/CMakeScratch/TryCompile-pvn1dX'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_79170/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_79170.dir/build.make CMakeFiles/cmTC_79170.dir/build
+        Building CXX object CMakeFiles/cmTC_79170.dir/test_mpi.cpp.o
+        /opt/homebrew/bin/aarch64-apple-darwin24-g++-14  -isystem /opt/homebrew/Cellar/open-mpi/5.0.7/include -arch arm64 -o CMakeFiles/cmTC_79170.dir/test_mpi.cpp.o -c /Users/tobias/HPC-Project/build/CMakeFiles/CMakeScratch/TryCompile-pvn1dX/test_mpi.cpp
+        Linking CXX executable cmTC_79170
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_79170.dir/link.txt --verbose=1
+        /opt/homebrew/bin/aarch64-apple-darwin24-g++-14  -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/cmTC_79170.dir/test_mpi.cpp.o -o cmTC_79170  /opt/homebrew/Cellar/open-mpi/5.0.7/lib/libmpi.dylib
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/FindMPI.cmake:1286 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/FindMPI.cmake:1680 (_MPI_try_staged_settings)"
+      - "CMakeLists.txt:5 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/Users/tobias/HPC-Project/build/CMakeFiles/CMakeScratch/TryCompile-kTotqh"
+      binary: "/Users/tobias/HPC-Project/build/CMakeFiles/CMakeScratch/TryCompile-kTotqh"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/tobias/HPC-Project/build/CMakeFiles/CMakeScratch/TryCompile-kTotqh'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_837cd/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_837cd.dir/build.make CMakeFiles/cmTC_837cd.dir/build
+        Building CXX object CMakeFiles/cmTC_837cd.dir/test_mpi.cpp.o
+        /opt/homebrew/bin/aarch64-apple-darwin24-g++-14  -isystem /opt/homebrew/Cellar/open-mpi/5.0.7/include -arch arm64 -o CMakeFiles/cmTC_837cd.dir/test_mpi.cpp.o -c /Users/tobias/HPC-Project/build/CMakeFiles/CMakeScratch/TryCompile-kTotqh/test_mpi.cpp
+        Linking CXX executable cmTC_837cd
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_837cd.dir/link.txt --verbose=1
+        /opt/homebrew/bin/aarch64-apple-darwin24-g++-14  -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/cmTC_837cd.dir/test_mpi.cpp.o -o cmTC_837cd  /opt/homebrew/Cellar/open-mpi/5.0.7/lib/libmpi.dylib
+        
+      exitCode: 0
+...
