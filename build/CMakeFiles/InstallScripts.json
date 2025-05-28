@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/tobias/HPC-Project/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
