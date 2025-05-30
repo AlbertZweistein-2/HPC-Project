@@ -17,9 +17,9 @@ struct HeapCompare {
     }
 };
 
-int HPC_AllgatherMergeBase(const void *sendbuf, int sendcount,
-                           MPI_Datatype sendtype, void *recvbuf, int recvcount,
-                           MPI_Datatype recvtype, MPI_Comm comm) {
+int HPC_AllgatherMergeBase(const void *sendbuf, int sendcount, MPI_Datatype sendtype, 
+                           void *recvbuf, int recvcount, MPI_Datatype recvtype, 
+                           MPI_Comm comm) {
     int rank, size;
     MPI_Comm_rank(comm, &rank);
     MPI_Comm_size(comm, &size);
