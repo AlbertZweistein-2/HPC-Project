@@ -12,17 +12,13 @@
 		[
 			"add_executable",
 			"target_link_libraries",
-			"set_property",
-			"_MPI_create_imported_target",
-			"find_package",
 			"target_compile_options",
 			"target_compile_definitions",
 			"target_include_directories"
 		],
 		"files" : 
 		[
-			"CMakeLists.txt",
-			"/opt/homebrew/share/cmake/Modules/FindMPI.cmake"
+			"CMakeLists.txt"
 		],
 		"nodes" : 
 		[
@@ -42,41 +38,19 @@
 				"parent" : 0
 			},
 			{
-				"command" : 4,
-				"file" : 0,
-				"line" : 5,
-				"parent" : 0
-			},
-			{
-				"file" : 1,
-				"parent" : 3
-			},
-			{
-				"command" : 3,
-				"file" : 1,
-				"line" : 1650,
-				"parent" : 4
-			},
-			{
 				"command" : 2,
-				"file" : 1,
-				"line" : 1238,
-				"parent" : 5
-			},
-			{
-				"command" : 5,
 				"file" : 0,
 				"line" : 32,
 				"parent" : 0
 			},
 			{
-				"command" : 6,
+				"command" : 3,
 				"file" : 0,
 				"line" : 31,
 				"parent" : 0
 			},
 			{
-				"command" : 7,
+				"command" : 4,
 				"file" : 0,
 				"line" : 23,
 				"parent" : 0
@@ -89,42 +63,47 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -std=gnu++17 -arch arm64"
-				},
-				{
-					"backtrace" : 7,
 					"fragment" : "-g"
 				},
 				{
-					"backtrace" : 7,
+					"backtrace" : 3,
+					"fragment" : "-g"
+				},
+				{
+					"backtrace" : 3,
 					"fragment" : "-O0"
 				},
 				{
-					"backtrace" : 7,
+					"backtrace" : 3,
 					"fragment" : "-Wall"
 				},
 				{
-					"backtrace" : 7,
+					"backtrace" : 3,
 					"fragment" : "-Wextra"
 				},
 				{
-					"backtrace" : 7,
+					"backtrace" : 3,
 					"fragment" : "-pedantic"
 				}
 			],
 			"defines" : 
 			[
 				{
-					"backtrace" : 8,
+					"backtrace" : 4,
 					"define" : "DEBUG"
 				}
 			],
 			"includes" : 
 			[
 				{
-					"backtrace" : 9,
+					"backtrace" : 5,
 					"isSystem" : true,
-					"path" : "/opt/homebrew/Cellar/open-mpi/5.0.7/include"
+					"path" : "/usr/lib/x86_64-linux-gnu/openmpi/include"
+				},
+				{
+					"backtrace" : 5,
+					"isSystem" : true,
+					"path" : "/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi"
 				}
 			],
 			"language" : "CXX",
@@ -155,13 +134,24 @@
 				"role" : "flags"
 			},
 			{
+				"fragment" : "",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "-Wl,-rpath,/usr/lib/x86_64-linux-gnu/openmpi/lib",
+				"role" : "libraries"
+			},
+			{
 				"backtrace" : 2,
 				"fragment" : "-lm",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 6,
-				"fragment" : "/opt/homebrew/Cellar/open-mpi/5.0.7/lib/libmpi.dylib",
+				"fragment" : "/usr/lib/x86_64-linux-gnu/openmpi/lib/libmpi_cxx.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/openmpi/lib/libmpi.so",
 				"role" : "libraries"
 			}
 		],

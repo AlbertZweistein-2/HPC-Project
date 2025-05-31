@@ -1,26 +1,22 @@
 [
 {
-  "directory": "/Users/tobias/HPC-Project/build",
-  "command": "/opt/homebrew/bin/aarch64-apple-darwin24-g++-14 -DDEBUG -isystem /opt/homebrew/Cellar/open-mpi/5.0.7/include -g -std=gnu++17 -arch arm64 -g -O0 -Wall -Wextra -pedantic -o CMakeFiles/allgather_merge.dir/main.cpp.o -c /Users/tobias/HPC-Project/sources/main.cpp",
-  "file": "/Users/tobias/HPC-Project/sources/main.cpp",
-  "output": "CMakeFiles/allgather_merge.dir/main.cpp.o"
+  "directory": "/home/tobiasponeschtu/Documents/HPC-Project/build",
+  "command": "/usr/bin/c++ -DDEBUG -isystem /usr/lib/x86_64-linux-gnu/openmpi/include -isystem /usr/lib/x86_64-linux-gnu/openmpi/include/openmpi -g -g -O0 -Wall -Wextra -pedantic -o CMakeFiles/allgather_merge.dir/main.cpp.o -c /home/tobiasponeschtu/Documents/HPC-Project/sources/main.cpp",
+  "file": "/home/tobiasponeschtu/Documents/HPC-Project/sources/main.cpp"
 },
 {
-  "directory": "/Users/tobias/HPC-Project/build",
-  "command": "/opt/homebrew/bin/aarch64-apple-darwin24-g++-14 -DDEBUG -isystem /opt/homebrew/Cellar/open-mpi/5.0.7/include -g -std=gnu++17 -arch arm64 -g -O0 -Wall -Wextra -pedantic -o CMakeFiles/allgather_merge.dir/baseline.cpp.o -c /Users/tobias/HPC-Project/sources/baseline.cpp",
-  "file": "/Users/tobias/HPC-Project/sources/baseline.cpp",
-  "output": "CMakeFiles/allgather_merge.dir/baseline.cpp.o"
+  "directory": "/home/tobiasponeschtu/Documents/HPC-Project/build",
+  "command": "/usr/bin/c++ -DDEBUG -isystem /usr/lib/x86_64-linux-gnu/openmpi/include -isystem /usr/lib/x86_64-linux-gnu/openmpi/include/openmpi -g -g -O0 -Wall -Wextra -pedantic -o CMakeFiles/allgather_merge.dir/baseline.cpp.o -c /home/tobiasponeschtu/Documents/HPC-Project/sources/baseline.cpp",
+  "file": "/home/tobiasponeschtu/Documents/HPC-Project/sources/baseline.cpp"
 },
 {
-  "directory": "/Users/tobias/HPC-Project/build",
-  "command": "/opt/homebrew/bin/aarch64-apple-darwin24-g++-14 -DDEBUG -isystem /opt/homebrew/Cellar/open-mpi/5.0.7/include -g -std=gnu++17 -arch arm64 -g -O0 -Wall -Wextra -pedantic -o CMakeFiles/allgather_merge.dir/algorithm1.cpp.o -c /Users/tobias/HPC-Project/sources/algorithm1.cpp",
-  "file": "/Users/tobias/HPC-Project/sources/algorithm1.cpp",
-  "output": "CMakeFiles/allgather_merge.dir/algorithm1.cpp.o"
+  "directory": "/home/tobiasponeschtu/Documents/HPC-Project/build",
+  "command": "/usr/bin/c++ -DDEBUG -isystem /usr/lib/x86_64-linux-gnu/openmpi/include -isystem /usr/lib/x86_64-linux-gnu/openmpi/include/openmpi -g -g -O0 -Wall -Wextra -pedantic -o CMakeFiles/allgather_merge.dir/algorithm1.cpp.o -c /home/tobiasponeschtu/Documents/HPC-Project/sources/algorithm1.cpp",
+  "file": "/home/tobiasponeschtu/Documents/HPC-Project/sources/algorithm1.cpp"
 },
 {
-  "directory": "/Users/tobias/HPC-Project/build",
-  "command": "/opt/homebrew/bin/aarch64-apple-darwin24-g++-14 -DDEBUG -isystem /opt/homebrew/Cellar/open-mpi/5.0.7/include -g -std=gnu++17 -arch arm64 -g -O0 -Wall -Wextra -pedantic -o CMakeFiles/allgather_merge.dir/algorithm2.cpp.o -c /Users/tobias/HPC-Project/sources/algorithm2.cpp",
-  "file": "/Users/tobias/HPC-Project/sources/algorithm2.cpp",
-  "output": "CMakeFiles/allgather_merge.dir/algorithm2.cpp.o"
+  "directory": "/home/tobiasponeschtu/Documents/HPC-Project/build",
+  "command": "/usr/bin/c++ -DDEBUG -isystem /usr/lib/x86_64-linux-gnu/openmpi/include -isystem /usr/lib/x86_64-linux-gnu/openmpi/include/openmpi -g -g -O0 -Wall -Wextra -pedantic -o CMakeFiles/allgather_merge.dir/algorithm2.cpp.o -c /home/tobiasponeschtu/Documents/HPC-Project/sources/algorithm2.cpp",
+  "file": "/home/tobiasponeschtu/Documents/HPC-Project/sources/algorithm2.cpp"
 }
 ]
