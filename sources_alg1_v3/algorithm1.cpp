@@ -128,6 +128,7 @@ int HPC_AllgatherMergeBruck(const void *sendbuf, int sendcount,
             );
             curr_len = merged_len + unmerged_len;
         } else {
+            cout << "K-way merge in Process " << r << " at step " << k << endl;
             // K-way merge
             vector<tuwtype_t*> sources(s_k + 1);
             vector<size_t> lengths(s_k + 1);
