@@ -68,7 +68,10 @@
         "type_traits": "cpp",
         "format": "cpp",
         "text_encoding": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "map": "cpp",
+        "numbers": "cpp",
+        "cinttypes": "cpp"
     },
     "cmake.sourceDirectory": "/home/tobiasponeschtu/Documents/HPC-Project/sources"
 }

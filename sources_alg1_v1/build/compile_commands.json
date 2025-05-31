@@ -1,0 +1,22 @@
+[
+{
+  "directory": "/home/tobiasponeschtu/Documents/HPC-Project/sources_alg1_v1/build",
+  "command": "/usr/bin/c++  -isystem /usr/lib/x86_64-linux-gnu/openmpi/include -isystem /usr/lib/x86_64-linux-gnu/openmpi/include/openmpi -O3 -DNDEBUG -O3 -march=native -Wall -pedantic -o CMakeFiles/allgather_merge.dir/main.cpp.o -c /home/tobiasponeschtu/Documents/HPC-Project/sources_alg1_v1/main.cpp",
+  "file": "/home/tobiasponeschtu/Documents/HPC-Project/sources_alg1_v1/main.cpp"
+},
+{
+  "directory": "/home/tobiasponeschtu/Documents/HPC-Project/sources_alg1_v1/build",
+  "command": "/usr/bin/c++  -isystem /usr/lib/x86_64-linux-gnu/openmpi/include -isystem /usr/lib/x86_64-linux-gnu/openmpi/include/openmpi -O3 -DNDEBUG -O3 -march=native -Wall -pedantic -o CMakeFiles/allgather_merge.dir/baseline.cpp.o -c /home/tobiasponeschtu/Documents/HPC-Project/sources_alg1_v1/baseline.cpp",
+  "file": "/home/tobiasponeschtu/Documents/HPC-Project/sources_alg1_v1/baseline.cpp"
+},
+{
+  "directory": "/home/tobiasponeschtu/Documents/HPC-Project/sources_alg1_v1/build",
+  "command": "/usr/bin/c++  -isystem /usr/lib/x86_64-linux-gnu/openmpi/include -isystem /usr/lib/x86_64-linux-gnu/openmpi/include/openmpi -O3 -DNDEBUG -O3 -march=native -Wall -pedantic -o CMakeFiles/allgather_merge.dir/algorithm1.cpp.o -c /home/tobiasponeschtu/Documents/HPC-Project/sources_alg1_v1/algorithm1.cpp",
+  "file": "/home/tobiasponeschtu/Documents/HPC-Project/sources_alg1_v1/algorithm1.cpp"
+},
+{
+  "directory": "/home/tobiasponeschtu/Documents/HPC-Project/sources_alg1_v1/build",
+  "command": "/usr/bin/c++  -isystem /usr/lib/x86_64-linux-gnu/openmpi/include -isystem /usr/lib/x86_64-linux-gnu/openmpi/include/openmpi -O3 -DNDEBUG -O3 -march=native -Wall -pedantic -o CMakeFiles/allgather_merge.dir/algorithm2.cpp.o -c /home/tobiasponeschtu/Documents/HPC-Project/sources_alg1_v1/algorithm2.cpp",
+  "file": "/home/tobiasponeschtu/Documents/HPC-Project/sources_alg1_v1/algorithm2.cpp"
+}
+]

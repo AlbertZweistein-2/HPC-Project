@@ -1,0 +1,2 @@
+Sende immer merged und ungemerged. Speichert ungemerged in recvbuffer und verwendet diesen in der letzten runde für den send.
+Macht dann nach jedem sendrecv einen 2-way merge und nur in der letzten runde, falls notwendig einen k-way merge
