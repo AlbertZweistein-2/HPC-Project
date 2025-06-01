@@ -14,8 +14,8 @@
 
 #include "algorithms.h"
 
-#define WARMUP 0 // You can adjust the warmup and repeat counts - 2
-#define REPEAT 1 // 10
+#define WARMUP 2 // You can adjust the warmup and repeat counts - 2
+#define REPEAT 10 // 10
 
 // Do not change the following
 #define MICRO 1000000.0

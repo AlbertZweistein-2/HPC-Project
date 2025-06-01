@@ -4,114 +4,112 @@
 #include <algorithm>
 #include <iostream>
 #include <cstring>
+
 #include "algorithms.h"
 
 int HPC_AllgatherMergeCirculant(const void *sendbuf, int sendcount, MPI_Datatype sendtype, 
-                                void *recvbuf, int recvcount, MPI_Datatype recvtype,
-                                MPI_Comm comm) {
-  int rank, size; // r, p
+                               void *recvbuf, int recvcount, MPI_Datatype recvtype,
+                               MPI_Comm comm) {
+  int rank, size; 
   MPI_Comm_rank(comm, &rank);
   MPI_Comm_size(comm, &size);
 
-  // Handle single process case
   if (size == 1) {
     memcpy(recvbuf, sendbuf, sendcount * sizeof(tuwtype_t));
     return MPI_SUCCESS;
   }
 
-  // Calculate q and s_k values
   int q = static_cast<int>(std::ceil(std::log2(size)));
   std::vector<int> s_k(q + 1, 0);
   s_k[q] = size;
   for (int i = q - 1; i >= 0; --i) {
       s_k[i] = static_cast<int>(std::ceil(s_k[i + 1] / 2.0));
   }
-
-  // Cast sendbuf to proper type
+  
   const tuwtype_t* sendbuf_typed = static_cast<const tuwtype_t*>(sendbuf);
   
-  // Initialize buffers with proper sizes
   std::vector<tuwtype_t> V(sendbuf_typed, sendbuf_typed + sendcount);
-  std::vector<tuwtype_t> W(sendcount);
-  std::vector<tuwtype_t> T(sendcount);
-  std::vector<tuwtype_t> W_prime(2 * sendcount);
+  std::vector<tuwtype_t> M;
+  std::vector<tuwtype_t> T;
+  std::vector<tuwtype_t> merge_buffer;
   
-  // Initial copy of own data
-  std::copy(V.begin(), V.end(), W.begin());
-  int current_size = sendcount;
+  const int max_buffer_size = size * sendcount;
+  M.reserve(max_buffer_size);
+  T.reserve(max_buffer_size);
+  merge_buffer.reserve(max_buffer_size);
+  
+  M.resize(sendcount);
+  std::copy(V.begin(), V.end(), M.begin());
+  size_t current_size = sendcount;
 
   for (int k = 0; k < q; k++) {
     int epsilon = s_k[k + 1] & 0x1;
     int t = (rank - s_k[k] + epsilon + size) % size;
     int f = (rank + s_k[k] - epsilon) % size;
     
-    // Resize T to receive the appropriate amount of data
-    T.resize(current_size);
-    
-    if (epsilon == 1) { // sk+1 is odd
-      // Send W to process t and receive T from process f
-      MPI_Sendrecv(W.data(), current_size, sendtype, t, 0,
+    if (epsilon == 1) {
+      if (T.size() < current_size)
+        T.resize(current_size);
+        
+      MPI_Sendrecv(M.data(), current_size, sendtype, t, 0,
                   T.data(), current_size, recvtype, f, 0, 
                   comm, MPI_STATUS_IGNORE);
       
-      // Prepare result buffer
-      std::vector<tuwtype_t> result(current_size * 2);
-      
-      // Merge W and T
-      std::merge(W.begin(), W.begin() + current_size, 
+      if (merge_buffer.size() < 2 * current_size)
+        merge_buffer.resize(2 * current_size);
+        
+      std::merge(M.begin(), M.begin() + current_size, 
                 T.begin(), T.begin() + current_size, 
-                result.begin());
+                merge_buffer.begin());
       
-      // Update W and its size
-      W = result;
+      std::swap(M, merge_buffer);
+      M.resize(2 * current_size);
       current_size *= 2;
       
-    } else { // sk+1 is even
+    } else {
       if (k == 0) {
-        // First round: Send V to process t and receive W from process f
+        T.resize(sendcount);
+          
         MPI_Sendrecv(V.data(), sendcount, sendtype, t, 0,
                     T.data(), sendcount, recvtype, f, 0, 
                     comm, MPI_STATUS_IGNORE);
-        
-        // Copy T to W (first received data)
-        W = T;
+
+        std::swap(M, T);
+        M.resize(sendcount);
         current_size = sendcount;
         
       } else {
-        // Subsequent rounds
-        // Merge V and W into W_prime
-        W_prime.resize(current_size + sendcount);
+        if (merge_buffer.size() < current_size + sendcount)
+          merge_buffer.resize(current_size + sendcount);
+        
         std::merge(V.begin(), V.end(), 
-                  W.begin(), W.begin() + current_size, 
-                  W_prime.begin());
+                  M.begin(), M.begin() + current_size, 
+                  merge_buffer.begin());
         
-        // Resize T to receive the merged data
-        T.resize(current_size + sendcount);
+        if (T.size() < current_size + sendcount)
+          T.resize(current_size + sendcount);
         
-        // Send W_prime to process t and receive T from process f
-        MPI_Sendrecv(W_prime.data(), current_size + sendcount, sendtype, t, 0,
+        MPI_Sendrecv(merge_buffer.data(), current_size + sendcount, sendtype, t, 0,
                     T.data(), current_size + sendcount, recvtype, f, 0, 
                     comm, MPI_STATUS_IGNORE);
         
-        // Prepare result buffer
-        std::vector<tuwtype_t> result(2 * current_size + sendcount);
+        if (merge_buffer.size() < current_size * 2 + sendcount)
+          merge_buffer.resize(current_size * 2 + sendcount);
         
-        // Merge W and T
-        std::merge(W.begin(), W.begin() + current_size,
+        std::merge(M.begin(), M.begin() + current_size,
                   T.begin(), T.begin() + current_size + sendcount,
-                  result.begin());
+                  merge_buffer.begin());
         
-        // Update W and its size
-        W = result;
+        std::swap(M, merge_buffer);
+        M.resize(current_size * 2 + sendcount);
         current_size = current_size * 2 + sendcount;
       }
     }
   }
 
   std::merge(V.begin(), V.end(),
-            W.begin(), W.begin() + current_size,
+            M.begin(), M.begin() + current_size,
             static_cast<tuwtype_t*>(recvbuf));
 
-  
   return MPI_SUCCESS;
 }
