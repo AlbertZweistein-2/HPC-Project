@@ -1,14 +1,34 @@
-subroutine Merge(A, B, C, (compare))
-    //suppose length(A) = length(B) => length(C) = 2*length(A)
+subroutine Merge(A, B, C)
+    i = 0  // Index for array A
+    j = 0  // Index for array B
+    k = 0  // Index for array C
 
-    for i in length(C) do
-        if compare(A[i],B[i]) <= 0 then // A[i] <= B[i]
-            C[i] = A[i]
+    while i < length(A) and j < length(B):
+        if A[i] <= B[j]:
+            C[k] = A[i]
+            i = i + 1
+        else:
+            C[k] = B[j]
+            j = j + 1
+        k = k + 1
+
+    // Collect remaining elements of A, if any
+    while i < length(A):
+        C[k] = A[i]
+        i = i + 1
+        k = k + 1
+
+    // Collect remaining elements of B, if any
+    while j < length(B):
+        C[k] = B[j]
+        j = j + 1
+        k = k + 1
+
 end subroutine
 
-procedure AllReduceMerge(V, W, ⊕, r ∈ C_p^s)
+procedure AllMerge(V, M, Merge, r ∈ C_p^s)
     if p = 1 then
-        W ← V return
+        M ← V return
     end if
 
     for k = 0, ..., q - 1 do
@@ -16,18 +36,18 @@ procedure AllReduceMerge(V, W, ⊕, r ∈ C_p^s)
         t, f ← (r - s_k + ε + p) mod p, (r + s_k - ε) mod p
 
         if ε = 1 then
-            Send(V, t, C_p^s) || Recv(T, f, C_p^s)
-            Merge(W, T, W)
+            Send(M, t, C_p^s) || Recv(T, f, C_p^s)
+            Merge(M, T, M)
         else
             if k = 0 then
-                Send(V, t, C_p^s) || Recv(W, f, C_p^s)
+                Send(V, t, C_p^s) || Recv(M, f, C_p^s)
             else
-                W' ← Merge(V, W)
-                Send(W', t, C_p^s) || Recv(T, f, C_p^s)
-                Merge(W, T, W)
+                Merge(V, M, M')
+                Send(M', t, C_p^s) || Recv(T, f, C_p^s)
+                Merge(M, T, M)
             end if
         end if
     end for
 
-    Merge(V, W, W)
+    Merge(V, M, M)
 end procedure
