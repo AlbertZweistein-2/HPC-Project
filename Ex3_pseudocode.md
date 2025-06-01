@@ -26,9 +26,9 @@ subroutine Merge(A, B, C)
 
 end subroutine
 
-procedure AllMerge(V, M, Merge, r ∈ C_p^s)
+procedure AllMerge(V, W, Merge, r ∈ C_p^s)
     if p = 1 then
-        M ← V return
+        W ← V return
     end if
 
     for k = 0, ..., q - 1 do
@@ -36,18 +36,18 @@ procedure AllMerge(V, M, Merge, r ∈ C_p^s)
         t, f ← (r - s_k + ε + p) mod p, (r + s_k - ε) mod p
 
         if ε = 1 then
-            Send(M, t, C_p^s) || Recv(T, f, C_p^s)
-            Merge(M, T, M)
+            Send(W, t, C_p^s) || Recv(T, f, C_p^s)
+            Merge(W, T, M)
         else
             if k = 0 then
-                Send(V, t, C_p^s) || Recv(M, f, C_p^s)
+                Send(V, t, C_p^s) || Recv(W, f, C_p^s)
             else
-                Merge(V, M, M')
-                Send(M', t, C_p^s) || Recv(T, f, C_p^s)
-                Merge(M, T, M)
+                Merge(V, W, W')
+                Send(W', t, C_p^s) || Recv(T, f, C_p^s)
+                Merge(W, T, M)
             end if
         end if
     end for
 
-    Merge(V, M, M)
+    Merge(V, M, W)
 end procedure
