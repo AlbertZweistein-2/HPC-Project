@@ -16,7 +16,7 @@ using namespace std;
 
 struct TrackedElement {
     tuwtype_t value;
-    int origin; // Process rank that sent this value
+    int origin;
 
     bool operator<(const TrackedElement& other) const {
         return value < other.value;
@@ -60,21 +60,17 @@ int HPC_AllgatherMergeBruck(const void *sendbuf, int sendcount, MPI_Datatype sen
 
     int q = static_cast<int>(ceil(log2(p)));
 
-    // Nur ein temporärer Puffer für Merging - der andere ist recvbuf
     vector<TrackedElement> buffer_B(p * sendcount);
     
-    // Temporärer Puffer für die Arbeit mit recvbuf
     vector<TrackedElement> recvbuf_tracked(p * sendcount);
-    
-    //Two temporary buffers for communication
+
     vector<TrackedElement> sendbuffer(p * sendcount);
     vector<TrackedElement> recvbuffer(p * sendcount);
 
-    //Initialize tracked recvbuf with local data and own process rank
     const tuwtype_t* local_data = static_cast<const tuwtype_t*>(sendbuf);
     for (int i = 0; i < sendcount; ++i) {
         recvbuf_tracked[i].value = local_data[i];
-        recvbuf_tracked[i].origin = r; // Store the origin process rank
+        recvbuf_tracked[i].origin = r;
     }
 
     TrackedElement* curr = recvbuf_tracked.data();
@@ -86,44 +82,38 @@ int HPC_AllgatherMergeBruck(const void *sendbuf, int sendcount, MPI_Datatype sen
     TrackedElement* sendptr;
     int send_len;
 
-    //Bruck algorithm with 2-way merges and tracking
     for (int k = 0; k < q; ++k) {
         s_k = 1 << k;
-        t = (r - s_k + p) % p; // Target process to send to
-        f = (r + s_k) % p; // Source process to receive from
+        t = (r - s_k + p) % p;
+        f = (r + s_k) % p; 
 
-        /* ---------- Bestimmen, was wir verschicken ---------- */
         if (k == q-1) {
-            s_k -= ((1 << q) - p); // Adjust for last round
+            s_k -= ((1 << q) - p);
             
             send_len = 0;
             for (int i = 0; i < curr_len; ++i) {
                 if (int(curr[i].origin - r + p) % p < s_k) {
-                    sendbuffer[send_len++] = curr[i];  // selektiv kopieren
+                    sendbuffer[send_len++] = curr[i];
                 }
             }
-            sendptr = sendbuffer.data();  // gefilterter Puffer
+            sendptr = sendbuffer.data();
         } else {
-            sendptr = curr;              // >>> NEU: direkt aus curr senden
+            sendptr = curr;
             send_len = curr_len;
         }
 
-        /* ---------- Kommunikation ---------- */
         MPI_Sendrecv(
             sendptr, send_len * sizeof(TrackedElement), MPI_BYTE, t, 0,
             recvbuffer.data(), send_len * sizeof(TrackedElement), MPI_BYTE, f, 0,
             comm, MPI_STATUS_IGNORE
         );
-        
-        /* ---------- Merge & Vorbereiten für nächste Runde ---------- */
+
         merge_with_tracking(curr, curr_len, recvbuffer.data(), send_len, next);
         curr_len += send_len;
 
-        // Swap buffers for next iteration
         std::swap(curr, next);
     }
-    
-    // Kopiere nur die Werte (nicht die Herkunftsinformationen) in recvbuf
+
     tuwtype_t* result = static_cast<tuwtype_t*>(recvbuf);
     for (int i = 0; i < curr_len; ++i) {
         result[i] = curr[i].value;
