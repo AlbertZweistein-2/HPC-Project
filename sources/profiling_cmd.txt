@@ -1,0 +1,26 @@
+1. Memory allocation profile
+mpirun -np 2 valgrind --tool=massif ./build_debug/allgather_merge -m 10 -a 2 -t 1 -c
+ms_print massif.out.<pid>
+
+mpicxx -fsanitize=address -g -o build_debug/allgather_merge your_code.cpp
+mpirun -np 2 ./build_debug/allgather_merge -m 10 -a 2 -t 1 -c
+
+2. Runtime
+mpicxx -pg -o build_debug/allgather_merge your_code.cpp
+mpirun -np 2 ./build_debug/allgather_merge -m 10 -a 2 -t 1 -c
+gprof ./build_debug/allgather_merge gmon.out > profile.txt
+
+perf record -g mpirun -np 2 ./build_debug/allgather_merge -m 10 -a 2 -t 1 -c
+perf report
+
+mpicxx -L/usr/lib/mpip -lmpiP -o build_debug/allgather_merge your_code.cpp
+mpirun -np 2 ./build_debug/allgather_merge -m 10 -a 2 -t 1 -c
+
+MPI_Pcontrol(1); // Enable profiling
+HPC_AllgatherMergeCirculant(sendbuf, m, TUW_TYPE, recvbuf, m, TUW_TYPE, comm);
+MPI_Pcontrol(0); // Disable profiling
+mpirun -np 2 ./build_debug/allgather_merge -m 10 -a 2 -t 1 -c
+
+3. All in All
+https://www.intel.com/content/www/us/en/developer/tools/oneapi/vtune-profiler.html
+mpirun -np 2 amplxe-cl -collect hotspots ./build_debug/allgather_merge -m 10 -a 2 -t 1 -c

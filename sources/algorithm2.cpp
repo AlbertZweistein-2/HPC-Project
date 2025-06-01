@@ -45,13 +45,16 @@ int HPC_AllgatherMergeCirculant(const void *sendbuf, int sendcount, MPI_Datatype
       s_k[i] = static_cast<int>(std::ceil(s_k[i + 1] / 2.0));
   }
 
+  /* Debug print for s_k
+  for (int i = 0; i < q; ++i) {
+    std::cout << "s_k[" << i << "] = " << s_k[i] << std::endl;
+  }
+  */
+
   // Temporary buffers for merging
   std::vector<tuwtype_t> W(recvcount, 0);
   std::vector<tuwtype_t> T(recvcount, 0);
   std::vector<tuwtype_t> W_prime(recvcount, 0);
-
-  // Copy initial data into W
-  memmove(W.data(), sendbuf, sendcount * sizeof(tuwtype_t));
 
   for (int k = 0; k < q; k++) {
     int epsilon = s_k[k + 1] & 0x1;
