@@ -28,19 +28,16 @@ int HPC_AllgatherMergeCirculant(const void *sendbuf, int sendcount, MPI_Datatype
   
   const tuwtype_t* sendbuf_typed = static_cast<const tuwtype_t*>(sendbuf);
   
-  // Einmalige Allokation mit maximaler Größe
   std::vector<tuwtype_t> V(sendbuf_typed, sendbuf_typed + sendcount);
   std::vector<tuwtype_t> M;
   std::vector<tuwtype_t> T;
   std::vector<tuwtype_t> merge_buffer;
   
-  // Reserviere maximal benötigten Speicher
   const int max_buffer_size = size * sendcount;
   M.reserve(max_buffer_size);
   T.reserve(max_buffer_size);
   merge_buffer.reserve(max_buffer_size);
   
-  // Setze Anfangszustand
   M.resize(sendcount);
   std::copy(V.begin(), V.end(), M.begin());
   size_t current_size = sendcount;
@@ -50,7 +47,6 @@ int HPC_AllgatherMergeCirculant(const void *sendbuf, int sendcount, MPI_Datatype
     int t = (rank - s_k[k] + epsilon + size) % size;
     int f = (rank + s_k[k] - epsilon) % size;
     
-    // Stelle sicher, dass T groß genug ist
     if (epsilon == 1) {
       if (T.size() < current_size)
         T.resize(current_size);
@@ -59,7 +55,6 @@ int HPC_AllgatherMergeCirculant(const void *sendbuf, int sendcount, MPI_Datatype
                   T.data(), current_size, recvtype, f, 0, 
                   comm, MPI_STATUS_IGNORE);
       
-      // Stelle sicher, dass merge_buffer groß genug ist
       if (merge_buffer.size() < 2 * current_size)
         merge_buffer.resize(2 * current_size);
         
@@ -67,27 +62,23 @@ int HPC_AllgatherMergeCirculant(const void *sendbuf, int sendcount, MPI_Datatype
                 T.begin(), T.begin() + current_size, 
                 merge_buffer.begin());
       
-      // Schneller Puffertausch statt Kopieren
       std::swap(M, merge_buffer);
       M.resize(2 * current_size);
       current_size *= 2;
       
     } else {
       if (k == 0) {
-        if (T.size() < sendcount)
-          T.resize(sendcount);
+        T.resize(sendcount);
           
         MPI_Sendrecv(V.data(), sendcount, sendtype, t, 0,
                     T.data(), sendcount, recvtype, f, 0, 
                     comm, MPI_STATUS_IGNORE);
 
-        // Schneller Puffertausch
         std::swap(M, T);
         M.resize(sendcount);
         current_size = sendcount;
         
       } else {
-        // Stelle sicher, dass merge_buffer groß genug ist
         if (merge_buffer.size() < current_size + sendcount)
           merge_buffer.resize(current_size + sendcount);
         
@@ -102,7 +93,6 @@ int HPC_AllgatherMergeCirculant(const void *sendbuf, int sendcount, MPI_Datatype
                     T.data(), current_size + sendcount, recvtype, f, 0, 
                     comm, MPI_STATUS_IGNORE);
         
-        // Stelle sicher, dass merge_buffer groß genug ist
         if (merge_buffer.size() < current_size * 2 + sendcount)
           merge_buffer.resize(current_size * 2 + sendcount);
         
@@ -110,7 +100,6 @@ int HPC_AllgatherMergeCirculant(const void *sendbuf, int sendcount, MPI_Datatype
                   T.begin(), T.begin() + current_size + sendcount,
                   merge_buffer.begin());
         
-        // Schneller Puffertausch
         std::swap(M, merge_buffer);
         M.resize(current_size * 2 + sendcount);
         current_size = current_size * 2 + sendcount;
@@ -118,11 +107,9 @@ int HPC_AllgatherMergeCirculant(const void *sendbuf, int sendcount, MPI_Datatype
     }
   }
 
-  // Abschließender Merge direkt ins Zielergebnis
-  tuwtype_t* recvbuf_typed = static_cast<tuwtype_t*>(recvbuf);
   std::merge(V.begin(), V.end(),
             M.begin(), M.begin() + current_size,
-            recvbuf_typed);
+            static_cast<tuwtype_t*>(recvbuf));
 
   return MPI_SUCCESS;
 }
