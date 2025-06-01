@@ -32,7 +32,8 @@ int HPC_AllgatherMergeCirculant(const void *sendbuf, int sendcount, MPI_Datatype
   std::vector<tuwtype_t> V(sendbuf_typed, sendbuf_typed + sendcount);
   std::vector<tuwtype_t> M(sendcount);
   std::vector<tuwtype_t> T(sendcount);
-  std::vector<tuwtype_t> W_prime(2 * sendcount);
+  
+  std::vector<tuwtype_t> merge_buffer(size * sendcount);
   
   std::copy(V.begin(), V.end(), M.begin());
   int current_size = sendcount;
@@ -50,13 +51,12 @@ int HPC_AllgatherMergeCirculant(const void *sendbuf, int sendcount, MPI_Datatype
                   T.data(), current_size, recvtype, f, 0, 
                   comm, MPI_STATUS_IGNORE);
       
-      std::vector<tuwtype_t> temp(current_size * 2);
-      
       std::merge(M.begin(), M.begin() + current_size, 
                 T.begin(), T.begin() + current_size, 
-                temp.begin());
+                merge_buffer.begin());
       
-      M = temp;
+      M.assign(merge_buffer.begin(), 
+                merge_buffer.begin() + 2 * current_size);
       current_size *= 2;
       
     } else {
@@ -71,25 +71,22 @@ int HPC_AllgatherMergeCirculant(const void *sendbuf, int sendcount, MPI_Datatype
         
       } else {
 
-        W_prime.resize(current_size + sendcount);
-
         std::merge(V.begin(), V.end(), 
                   M.begin(), M.begin() + current_size, 
-                  W_prime.begin());
+                  merge_buffer.begin());
         
         T.resize(current_size + sendcount);
         
-        MPI_Sendrecv(W_prime.data(), current_size + sendcount, sendtype, t, 0,
+        MPI_Sendrecv(merge_buffer.data(), current_size + sendcount, sendtype, t, 0,
                     T.data(), current_size + sendcount, recvtype, f, 0, 
                     comm, MPI_STATUS_IGNORE);
-
-        std::vector<tuwtype_t> temp(2 * current_size + sendcount);
         
         std::merge(M.begin(), M.begin() + current_size,
                   T.begin(), T.begin() + current_size + sendcount,
-                  temp.begin());
+                  merge_buffer.begin());
         
-        M = temp;
+        M.assign(merge_buffer.begin(), 
+                merge_buffer.begin() + (current_size * 2 + sendcount));
         current_size = current_size * 2 + sendcount;
       }
     }
