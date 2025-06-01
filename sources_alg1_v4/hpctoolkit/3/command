@@ -1,0 +1,4 @@
+cmake -B build -S . -DCMAKE_BUILD_TYPE=Release
+cmake --build build --parallel
+srun -t 5 -p q_student -N 5 --ntasks-per-node=32 hpcrun -t ./build/allgather_merge 
+
