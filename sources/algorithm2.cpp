@@ -39,6 +39,7 @@ int HPC_AllgatherMergeCirculant(const void *sendbuf, int sendcount, MPI_Datatype
   merge_buffer.reserve(max_buffer_size);
   
   M.resize(sendcount);
+  T.resize(sendcount);
   std::copy(V.begin(), V.end(), M.begin());
   size_t current_size = sendcount;
 
@@ -68,7 +69,6 @@ int HPC_AllgatherMergeCirculant(const void *sendbuf, int sendcount, MPI_Datatype
       
     } else {
       if (k == 0) {
-        T.resize(sendcount);
           
         MPI_Sendrecv(V.data(), sendcount, sendtype, t, 0,
                     T.data(), sendcount, recvtype, f, 0, 
