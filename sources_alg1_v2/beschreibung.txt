@@ -1,0 +1,3 @@
+Speichert im recvbuffer immer die unsortierten listen und sendet die unsortierten listen und macht aber einen k-way merge nach jedem sendrecv
+
+Noch Potential in Speichernutzungsoptimierung

@@ -1,0 +1,1 @@
+Speichert im recvbuffer immer die unsortierten listen, k-way merge erst ganz am ende. Viel optimiert mit zeigernutzung und speicheroptimierung

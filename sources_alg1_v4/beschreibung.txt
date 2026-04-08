@@ -1,0 +1,4 @@
+Sende immer aktuell merged und sorted M array, empfange also auch immer sorted daten. 
+Mache dann 2-way merge nach jedem sendrecv und sortiere ebenso die index liste neu, die beinhaltet,
+von welchem prozess die zahl im merged array ursprünglich stammt. diese indizes müssen dann verwendet werden,
+ um den letzten send zu bestimmen.

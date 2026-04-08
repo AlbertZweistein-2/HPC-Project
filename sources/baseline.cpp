@@ -3,14 +3,19 @@
 #include <queue>
 #include <cstring>
 #include "algorithms.h"
+#include <iostream>
 
+
+using namespace std;
 struct HeapNode {
-    int idx;
-    int pos;
-    tuwtype_t* ptr;
+    int idx;      // index of the process array
+    int pos;      // position in the array
+    tuwtype_t* ptr;    // pointer to the element
+};
 
-    bool operator>(const HeapNode& other) const {
-        return *(this->ptr) > *(other.ptr);
+struct HeapCompare {
+    bool operator()(const HeapNode& a, const HeapNode& b) const {
+        return *(a.ptr) > *(b.ptr);  // for a Min-Heap
     }
 };
 
@@ -21,50 +26,44 @@ int HPC_AllgatherMergeBase(const void *sendbuf, int sendcount, MPI_Datatype send
     MPI_Comm_rank(comm, &rank);
     MPI_Comm_size(comm, &size);
 
+    // 1. Allgather all data
     MPI_Allgather(
         sendbuf, sendcount, sendtype,
         recvbuf, recvcount, recvtype,
         comm
     );
-
-    std::vector<HeapNode> heap;
-    heap.reserve(size);
+    priority_queue<HeapNode, vector<HeapNode>, HeapCompare> heap{HeapCompare{}};
+    vector<tuwtype_t*> sources(size); // Pointers to the start of each process's data
 
     for (int i = 0; i < size; ++i) {
-        heap.push_back(HeapNode{
-            i, 0,
-            static_cast<tuwtype_t*>(recvbuf) + i * recvcount
-        });
-    }
-
-    std::vector<int> positions(size, 0);
-    std::priority_queue<HeapNode, std::vector<HeapNode>, std::greater<HeapNode>> pq(
-        std::greater<HeapNode>{}, heap
-    );
-
-    std::vector<tuwtype_t> output(size * recvcount);
-
-    for (int out_idx = 0; out_idx < size * recvcount; ++out_idx) {
-        if (pq.empty()) break;
-        HeapNode min = pq.top(); pq.pop();
-
-        std::memcpy(
-            output.data() + out_idx,
-            min.ptr,
-            sizeof(tuwtype_t)
-        );
-
-        positions[min.idx]++;
-        if (positions[min.idx] < recvcount) {
-            pq.push(HeapNode{
-                min.idx,
-                positions[min.idx],
-                static_cast<tuwtype_t*>(recvbuf) + min.idx * recvcount + positions[min.idx]
-            });
+        tuwtype_t* base = static_cast<tuwtype_t*>(recvbuf) + i * recvcount;
+        sources[i] = base;
+        if (recvcount > 0) {
+            heap.push(HeapNode{i, 0, base});
         }
     }
+    // 3. Merge result into temporary buffer
+    vector<tuwtype_t> merged(size * recvcount);
+    tuwtype_t* dest = merged.data();
+    int merged_offset = 0;
 
-    std::memcpy(recvbuf, output.data(), size * recvcount * sizeof(tuwtype_t));
+    while (!heap.empty()) {
+        HeapNode node = heap.top();
+        heap.pop();
+
+        dest[merged_offset] = *node.ptr;
+        ++merged_offset;
+
+        // Move pointer to next element in same list
+        if (node.pos + 1 < recvcount) {
+            node.pos += 1;
+            node.ptr = sources[node.idx] + node.pos;
+            heap.push(node);
+        }
+    }
+    // 4. Copy back merged data into recvbuf
+    copy(merged.begin(), merged.end(), static_cast<tuwtype_t*>(recvbuf));
+    // memcpy(recvbuf, merged.data(), size * recvcount);
 
     return MPI_SUCCESS;
 }
